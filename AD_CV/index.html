@@ -19,7 +19,7 @@
 
 				<!-- Header -->
 					<header id="header">
-						<div class="logo">
+						<div class="logo" id="logo-disque" title="Cliquez pour écouter une chanson" style="cursor: pointer;">
 							<span class="icon solid fa-compact-disc"></span>
 						</div>
 						<div class="content">
@@ -44,7 +44,7 @@
 
 						<!-- Intro -->
 							<article id="intro">
-								<h2 class="major">Curriculum vitae</h2>
+								<h2 class="major">Expériences</h2>
 								<span class="image main"><img src="images/porteurmasse.jpg" alt="" /></span>
 								<p>Passionné par la politique et la musique québécoise émergente, je suis diplômé du baccalauréat en science politique de l'Université Laval. Je poursuis présentement mon parcours à la maîtrise avec mémoire, liant la culture musicale émergente de la ville de Québec et les politiques d'équité, de diversité et d'inclusion.</p>
 								<p>Distinctions : Tableau d'honneur de la Faculté des sciences sociales 2025-2026; Mention d'honneur de la doyenne; Porteur de la masse de la Faculté des sciences sociales.</p>
@@ -362,12 +362,71 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 		<!-- BG -->
 			<div id="bg"></div>
 
+		<!-- Lecteur : chanson en cours -->
+			<div id="now-playing" aria-live="polite">
+				<img id="np-cover" src="" alt="Pochette de l'album" />
+				<div class="np-texte">
+					<span class="np-label">En lecture</span>
+					<strong id="np-titre"></strong>
+					<span id="np-artiste"></span>
+				</div>
+			</div>
+
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+			(function () {
+				var chansons = [
+					{ fichier: 'audio/jemelance.mp3', titre: 'Et je m\'élance', artiste: 'Flore & JADE', cover: 'images/pochettemm.jpg' },
+					{ fichier: 'audio/cafeklem.mp3', titre: 'Café Klem', artiste: 'Flore & JADE', cover: 'images/pochettemm.jpg' },
+					{ fichier: 'audio/histoirefamille.mp3', titre: 'Histoire de famille', artiste: 'Flore & JADE', cover: 'images/pochettemm.jpg' },
+					{ fichier: 'audio/jesaisjesais.mp3', titre: 'Je sais, je sais', artiste: 'Flore & JADE', cover: 'images/pochettemm.jpg' }
+				];
 
+				var logo = document.getElementById('logo-disque');
+				var carte = document.getElementById('now-playing');
+				var npCover = document.getElementById('np-cover');
+				var npTitre = document.getElementById('np-titre');
+				var npArtiste = document.getElementById('np-artiste');
+				var lecteur = new Audio();
+				var derniere = -1;
+
+				function afficher(c) {
+					npCover.src = c.cover;
+					npTitre.textContent = c.titre;
+					npArtiste.textContent = c.artiste;
+					carte.classList.add('visible');
+				}
+
+				function cacher() {
+					carte.classList.remove('visible');
+				}
+
+				lecteur.addEventListener('play',  function () { logo.classList.add('joue'); });
+				lecteur.addEventListener('pause', function () { logo.classList.remove('joue'); cacher(); });
+				lecteur.addEventListener('ended', function () { logo.classList.remove('joue'); cacher(); });
+
+				logo.addEventListener('click', function () {
+					if (!lecteur.paused) {
+						lecteur.pause();
+						lecteur.currentTime = 0;
+						return;
+					}
+					var i;
+					do {
+						i = Math.floor(Math.random() * chansons.length);
+					} while (i === derniere && chansons.length > 1);
+					derniere = i;
+					lecteur.src = chansons[i].fichier;
+					lecteur.play().then(function () {
+						afficher(chansons[i]);
+					}).catch(function () {});
+				});
+			})();
+		</script>
 	</body>
 </html>
