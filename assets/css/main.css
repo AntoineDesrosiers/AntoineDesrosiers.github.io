@@ -1737,3 +1737,40 @@ input, select, textarea {
 				max-width: none;
 			}
 			}
+
+			.cv-apercu {
+				text-align: center;
+				margin: 2rem 0;
+			}
+
+				.cv-apercu a.image {
+				display: block;
+				width: 100%;
+				max-width: 18rem;
+				margin: 0 auto 1.5rem auto;
+				border: 1px solid rgba(255, 255, 255, 0.35);
+			}
+
+				.cv-apercu a.image img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
+			.projet {
+				text-align: center;
+				margin: 2rem 0;
+			}
+
+				.projet a.image {
+				display: block;
+				width: 100%;
+				max-width: 24rem;
+				margin: 0 auto 1.5rem auto;
+				border: 1px solid rgba(255, 255, 255, 0.35);
+			}
+
+				.projet a.image img {
+				display: block;
+				width: 100%;
+				height: auto;
+			}
